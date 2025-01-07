@@ -1,3 +1,11 @@
+/*
+ * 2024
+ * Project: GPIO_AVR
+ * Creator: Jakub Marszalek
+ * File: main.cpp
+ *
+ */
+
 #include <Arduino.h>
 #include <avr/io.h>
 #include "GPIOPin.hpp"
@@ -5,39 +13,42 @@
 
 int main()
 {
-  jm::GPIOPin led('B', PB0);
+  jm::GPIOPin ledB('B', PB0);
+  jm::GPIOPin ledCp('C', PB3);
+  jm::GPIOPin ledCd('C', PB4);
   jm::GPIOPin button('D', PD7);
 
   // test blink and toggle
-  /*led.setDirection(true);
-  led.write(1);
+  ledB.setDirection(true);
+  ledB.write(1);
   _delay_ms(1000);
-  led.toggle();
+  ledB.toggle();
   _delay_ms(1000);
-  led.blink(500, 10);*/
+  ledB.blink(500, 10);
 
+  // test button
   button.setDirection(false);
   button.pullUp(true);
   while (1)
   {
     // test pullUp
-    /*if (!button.read())
+    if (!button.read())
     {
-      led.write(true);
+      ledCp.write(true);
     }
     else
     {
-      led.write(false);
+      ledCp.write(false);
     }
-    */
 
+    // test debounced
     if (!button.debounced())
     {
-      led.write(true);
+      ledCd.write(true);
     }
     else
     {
-      led.write(false);
+      ledCd.write(false);
     }
   }
   return 0;
