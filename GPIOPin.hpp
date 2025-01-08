@@ -10,22 +10,30 @@
 #include "GPIOPort.hpp"
 #include "util/delay.h"
 
+/**
+ * @brief A class that allows additional capabilities to be added to a controlled pin.
+ *
+ * This class extends GPIOPort and provides functionality such as toggling, blinking,
+ * debouncing, and configuring PWM on a specific pin.
+ */
 namespace jm
 {
-    /*
-     * A class that allows you to add additional capabilities to the controlled pin.
-     */
     class GPIOPin : public GPIOPort
     {
     public:
-        /*
-         * A constructor that allows you to enter the port name and pin number when creating an object.
+        /**
+         * @brief Constructs a GPIOPin object with the specified port and pin number.
+         *
+         * @param portName The name of the port (e.g., 'B', 'C', 'D').
+         * @param pinNr The pin number within the port (0-7).
          */
         GPIOPin(char portName, uint8_t pinNr)
             : GPIOPort(portName, pinNr) {}
 
-        /*
-         * basic methods for setting direction, writing or reading
+        /**
+         * @brief Sets the direction of the pin.
+         *
+         * @param inOut Set to true for output, false for input.
          */
         void setDirection(bool inOut) override
         {
@@ -39,6 +47,11 @@ namespace jm
             }
         }
 
+        /**
+         * @brief Writes a state to the pin.
+         *
+         * @param state Set to true to drive the pin high, false to drive it low.
+         */
         void write(bool state) override
         {
             if (state)
@@ -51,13 +64,20 @@ namespace jm
             }
         }
 
+        /**
+         * @brief Reads the current state of the pin.
+         *
+         * @return True if the pin is high, false otherwise.
+         */
         bool read() const override
         {
             return (*m_PIN & getMask()) != 0;
         }
 
-        /*
-         * It allows you to add a pull up resistor to the pin.
+        /**
+         * @brief Enables or disables the pull-up resistor on the pin.
+         *
+         * @param on Set to true to enable the pull-up resistor, false to disable it.
          */
         void pullUp(bool on)
         {
@@ -71,16 +91,19 @@ namespace jm
             }
         }
 
-        /*
-         * Allows you to change the state of the pin.
+        /**
+         * @brief Toggles the state of the pin.
          */
         void toggle()
         {
             *m_PORT ^= getMask();
         }
 
-        /*
-         * It allows the LED to blink at an appropriate frequency specified by the use.
+        /**
+         * @brief Blinks the pin at the specified delay and number of times.
+         *
+         * @param delay The delay in milliseconds between state changes.
+         * @param times The number of times to toggle the pin.
          */
         void blink(uint16_t delay, uint8_t times)
         {
@@ -93,8 +116,10 @@ namespace jm
             }
         }
 
-        /*
-         * It allows you to eliminate the phenomenon of debouncing when using the keys
+        /**
+         * @brief Eliminates the debouncing effect when using a button or key.
+         *
+         * @return True if the pin state is stable and consistent, false otherwise.
          */
         bool debounced()
         {
@@ -111,9 +136,13 @@ namespace jm
             }
         }
 
-        /*
-         * It allows you to set the PWM function on the selected pin.
-         * The user enters the clock he wants to use, the fill, the channel and the prescaler value from 0 to 7.
+        /**
+         * @brief Configures PWM functionality on the selected pin.
+         *
+         * @param timer The timer to use (0, 1, or 2).
+         * @param fill The duty cycle (0-255 for 8-bit timers, or 0-65535 for 16-bit timers).
+         * @param channel The PWM channel ('A' or 'B').
+         * @param prescaler The prescaler value (0-7).
          */
         void configurePWM(uint8_t timer, uint8_t fill, char channel, uint8_t prescaler)
         {
