@@ -103,36 +103,5 @@ namespace jm
             }
         }
 
-        /*
-         * basic methods for setting direction, writing or reading
-         */
-        void setDirection(bool inOut) override
-        {
-            if (inOut)
-            {
-                *m_DDR |= getMask();
-            }
-            else
-            {
-                *m_DDR &= ~getMask();
-            }
-        }
-
-        void write(bool state) override
-        {
-            if (state)
-            {
-                *m_PORT |= getMask();
-            }
-            else
-            {
-                *m_PORT &= ~getMask();
-            }
-        }
-
-        bool read() const override
-        {
-            return (*m_PIN & getMask()) != 0;
-        }
     };
 }
