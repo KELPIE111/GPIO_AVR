@@ -6,7 +6,6 @@
  *
  */
 
-#include <Arduino.h>
 #include <avr/io.h>
 #include "GPIOPin.hpp"
 #include "util/delay.h"
