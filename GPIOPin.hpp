@@ -78,5 +78,57 @@ namespace jm
                 return false;
             }
         }
+
+        /*
+         * It allows you to set the PWM function on the selected pin.
+         * The user enters the clock he wants to use, the fill, the channel and the prescaler value from 0 to 7.
+         */
+        void configurePWM(uint8_t timer, uint8_t fill, char channel, uint8_t prescaler)
+        {
+            if (timer == 0)
+            {
+                if (channel == 'A')
+                {
+                    TCCR0A |= (1 << COM0A1) | (1 << WGM00) | (1 << WGM01);
+                    OCR0A = fill;
+                }
+                else if (channel == 'B')
+                {
+                    TCCR0A |= (1 << COM0B1) | (1 << WGM00) | (1 << WGM01);
+                    OCR0B = fill;
+                }
+                TCCR0B = (TCCR0B & 0xF8) | (prescaler & 0x07);
+            }
+            else if (timer == 1)
+            {
+                if (channel == 'A')
+                {
+                    TCCR1A |= (1 << COM1A1) | (1 << WGM11);
+                    OCR1A = fill;
+                }
+                else if (channel == 'B')
+                {
+                    TCCR1A |= (1 << COM1B1) | (1 << WGM11);
+                    OCR1B = fill;
+                }
+                TCCR1B |= (1 << WGM12) | (1 << WGM13);
+                ICR1 = 16000;
+                TCCR1B = (TCCR1B & 0xF8) | (prescaler & 0x07);
+            }
+            else if (timer == 2)
+            {
+                if (channel == 'A')
+                {
+                    TCCR2A |= (1 << COM2A1) | (1 << WGM20) | (1 << WGM21);
+                    OCR2A = fill;
+                }
+                else if (channel == 'B')
+                {
+                    TCCR2A |= (1 << COM2B1) | (1 << WGM20) | (1 << WGM21);
+                    OCR2B = fill;
+                }
+                TCCR2B = (TCCR2B & 0xF8) | (prescaler & 0x07);
+            }
+        }
     };
 }
