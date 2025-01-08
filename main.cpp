@@ -17,6 +17,11 @@ int main()
   jm::GPIOPin ledCp('C', PB3);
   jm::GPIOPin ledCd('C', PB4);
   jm::GPIOPin button('D', PD7);
+  jm::GPIOPin PWM('B', PB2);
+
+  // PWM test
+  PWM.setDirection(true);
+  PWM.configurePWM(1, 255, 'B', 4);
 
   // test blink and toggle
   ledB.setDirection(true);
@@ -51,5 +56,6 @@ int main()
       ledCd.write(false);
     }
   }
+
   return 0;
 }
